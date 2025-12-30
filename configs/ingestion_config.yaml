@@ -1,0 +1,19 @@
+name: "Wikipedia Analytics"
+version: v1
+enabled: true
+project:
+  - all-projects
+access: 
+  - all-access
+  - desktop
+  - mobile-web
+  - mobile-app
+agent:
+  - all-agents
+  - user
+  - spider
+  - automated
+granularity: 
+  - hourly
+  - daily
+  - monthly

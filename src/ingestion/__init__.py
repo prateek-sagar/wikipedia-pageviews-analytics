@@ -1,0 +1,1 @@
+from .wikipedia_api_client import get_data
