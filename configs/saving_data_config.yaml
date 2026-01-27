@@ -1,0 +1,4 @@
+enabled: true
+raw: "data/raw"
+silver: "data/silver"
+gold: "data/gold"

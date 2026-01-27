@@ -6,7 +6,7 @@ such as cleaning,
 def raw_to_silver(dataFrame):
     #check if data frame is null or not 
 
-    if (dataFrame is null):
+    if (dataFrame is None):
         return 
     
     # dealing with null values,

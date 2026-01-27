@@ -6,7 +6,8 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "dotenv>=0.9.9",
-    "pyspark>=4.1.0",
+    "pyspark==4.0.1",
     "pyyaml>=6.0.3",
     "requests>=2.32.5",
+    "uuid>=1.30",
 ]

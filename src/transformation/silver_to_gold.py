@@ -1,8 +1,7 @@
-from pyspark.sql import DataFrame
-
+from pyspark.sql import DataFrame # type: ignore
 
 def silver_to_gold(dataframe: DataFrame):
-    if (dataframe is null):
+    if (dataframe is None):
         return
     
     # aggregation
