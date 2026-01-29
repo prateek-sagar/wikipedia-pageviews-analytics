@@ -1,0 +1,16 @@
+{
+  "identity": {
+    "run_id": "",
+    "window": {
+      "start": "",
+      "end": ""
+    }
+  },
+  "intent": {
+    "action": ""
+  },
+  "observation": {
+    "status": "",
+    "exception": ""
+  }
+}

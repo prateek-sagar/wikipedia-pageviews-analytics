@@ -1,5 +1,5 @@
 from datetime import date, datetime
-import uuid
+
 from functools import singledispatch
 import json
 from pathlib import Path
@@ -10,27 +10,48 @@ DATA_DIR = PROJECT_ROOT / 'src'
 # Evidence is capturing and refining the truth, on time and run basis. 
 # Run is a task that performs 
 @singledispatch
-def evidence_writer(result, action) -> None:
+def evidence_writer(result, action, run) -> None:
     raise TypeError(f"Unsupported type: {type(result)}")
 
 @evidence_writer.register
-def _(result: dict, action) -> None:
-    _write_file(action, json.dumps(result, indent=2), '.json')
+def _(result: dict, action, run) -> None:
+    
+    result['run_id'] = run
+    _write_file(run, generate_content(action, result), '.json')
 
 @evidence_writer.register
-def _(result: str, action) -> None:
-    _write_file(action, result, ".txt")
+def _(result: str, action, run) -> None:
+    _write_file(run, result, ".txt")
 
-def _write_file(action, content, suffix):
+def _write_file(run, content, suffix):
     date_str = date.today().strftime('%Y_%m_%d')
-    run = datetime.now().strftime('%I_%M') + str(uuid.uuid4())
 
     file_path = (
-        DATA_DIR / 'evidence' / date_str / run / action
+        DATA_DIR / 'evidence' / date_str / run 
     ).with_suffix(suffix)
 
     file_path.parent.mkdir(parents=True, exist_ok=True)
 
     with open(file_path, "x") as f:
         f.write(content)
-        
+
+
+def generate_content(action, result) -> dict:
+    content = {
+        "identity" : {
+            "run_id": result.run_id,
+            "window": {
+                "start": result.start,
+                "end": result.end
+            }
+        },
+        "intent": {
+            "action": action
+        },
+        "observation": {
+            "status": result.status,
+            "exception": result.exception
+        }
+    }
+
+    return content

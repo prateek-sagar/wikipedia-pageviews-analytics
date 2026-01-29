@@ -1,1 +1,0 @@
-from .gathering import get_data

@@ -1,14 +1,18 @@
-from dotenv import load_dotenv
+from dotenv import load_dotenv # type: ignore
 import os
-from src.ingestion import get_data
+from src.ingestion.gathering import get_data
 from datetime import date
-from src.common.utils import load_yaml_config
+from src.common.utils import read_data_and_apply_schema, provide_spark_engine
 from datetime import date, datetime, timedelta
+from src.transformation.cleaning import cleaning
+import uuid
 
 load_dotenv()
 
 def run():
     print("Hello from wikipedia-pageview-analytics!")
+
+    engine = provide_spark_engine()
     
     start_str = "2023010100"
     
@@ -36,7 +40,9 @@ def run():
         #input time start and end
         #output data
         #functions to perform
-        data = get_data(start, end)        
+        run = datetime.now().strftime('%I_%M') + str(uuid.uuid4())
+
+        data = get_data(start, end)   
 
         if (not data):
             raise RuntimeError(f"Not Getting the data from {start} to {end} ")
@@ -45,12 +51,16 @@ def run():
         
         #function to save the data in the lakehouse
         
+        # set the data as per schema and convert it into the dataframe
+        df = read_data_and_apply_schema(data, engine)
 
         #cleaning
         #input dataframe
         #output dataframe
         #functions to perform
         #collect the evidence
+        run_id_for_cleaning = datetime.now().strftime('%I_%M') + str(uuid.uuid4())
+        df, evidence = cleaning(df, engine)
 
         #casting
         #input dataframe
@@ -77,6 +87,7 @@ def run():
         #collect the evidence
         
         start_dt = end_dt
+
 
 
 if __name__ == "__main__":
