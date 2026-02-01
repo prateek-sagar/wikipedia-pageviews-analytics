@@ -1,7 +1,9 @@
 from pyspark.sql import DataFrame, SparkSession # type: ignore
+from common.decorators import observable
 
 
-def cleaning(df: DataFrame, engine: SparkSession):
+@observable("cleaning")
+def cleaning(df: DataFrame, engine: SparkSession, *, run_id, window):
     """
     Here we are dealing with
     null checking,
@@ -27,11 +29,7 @@ def cleaning(df: DataFrame, engine: SparkSession):
 
     after_rows = df.count()
 
-    return df, {
-        "rows_before": before_rows,
-        "rows_after": after_rows,
-        "rows_dropped": before_rows - after_rows
-    }
+    return df
 
     
 

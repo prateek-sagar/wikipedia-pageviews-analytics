@@ -5,6 +5,8 @@ import yaml # type: ignore
 from pyspark.sql import SparkSession, DataFrame # type: ignore
 from pyspark.sql.types import StructType, StructField, StringType, ArrayType, LongType # type: ignore
 from pyspark.sql.functions import explode, col # type: ignore
+from functools import wraps
+from src.storage.lakehouse_writer import evidence_writer
 
  
 
@@ -50,5 +52,5 @@ def schema() -> StructType:
     rootSchema = StructType([
         StructField("items", ArrayType(itemSchema), True)
     ])
-
     return rootSchema
+
