@@ -1,0 +1,43 @@
+services:
+
+  wikipedia_db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: wiki
+      POSTGRES_PASSWORD: w1k1p3d14
+      POSTGRES_DB: wikipedia
+    ports:
+      - "5433:5432"
+    volumes:
+      - wikipedia_analytics_data:/var/lib/postgresql
+  
+  orchestra_db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: orchestra
+      POSTGRES_PASSWORD: orch3str4
+      POSTGRES_DB: orchestra
+    ports:
+      - "5434:5432"
+    volumes:
+      - orchestration_data:/var/lib/postgresql
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    ports:
+      - "8085:80"
+    depends_on:
+      wikipedia_db: 
+        condition: service_started
+      orchestra_db: 
+        condition: service_started
+      
+
+volumes:
+  wikipedia_analytics_data:
+    driver: local
+  orchestration_data:
+    driver: local

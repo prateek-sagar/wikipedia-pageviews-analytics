@@ -60,7 +60,8 @@ def run():
         #functions to perform
         #collect the evidence
         run_id_for_cleaning = datetime.now().strftime('%I_%M') + str(uuid.uuid4())
-        df, evidence = cleaning(df, engine)
+        window="window"
+        df, evidence = cleaning(df, engine, run_id=run_id_for_cleaning, window=window)
 
         #casting
         #input dataframe
